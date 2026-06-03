@@ -10,7 +10,11 @@ import {
 } from "../store/apis/transactionApi";
 
 const TransactionManager = () => {
+
+  const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const { data: transactions = [] } =
     useGetTransactionsQuery();
@@ -53,7 +57,7 @@ const TransactionManager = () => {
     } catch (error) {
       toast.error(
         error?.data?.message ||
-          "Failed to add transaction"
+        "Failed to add transaction"
       );
     }
   };
@@ -68,18 +72,60 @@ const TransactionManager = () => {
     } catch (error) {
       toast.error(
         error?.data?.message ||
-          "Failed to delete transaction"
+        "Failed to delete transaction"
       );
     }
   };
 
   const filteredTransactions =
-    filter === "all"
-      ? transactions
-      : transactions.filter(
-          (transaction) =>
-            transaction.type === filter
+    transactions.filter(
+      (transaction) => {
+
+        const matchesType =
+          filter === "all"
+            ? true
+            : transaction.type === filter;
+
+        const matchesSearch =
+          transaction.title
+            .toLowerCase()
+            .includes(
+              search.toLowerCase()
+            ) ||
+          transaction.category
+            .toLowerCase()
+            .includes(
+              search.toLowerCase()
+            );
+
+        const transactionDate =
+          new Date(
+            transaction.createdAt
+          );
+
+        const matchesFromDate =
+          fromDate === ""
+            ? true
+            : transactionDate >=
+            new Date(fromDate);
+
+        const matchesToDate =
+          toDate === ""
+            ? true
+            : transactionDate <=
+            new Date(
+              toDate +
+              "T23:59:59"
+            );
+
+        return (
+          matchesType &&
+          matchesSearch &&
+          matchesFromDate &&
+          matchesToDate
         );
+      }
+    );
 
   return (
     <>
@@ -167,31 +213,69 @@ const TransactionManager = () => {
 
       <div className="card shadow-sm">
         <div className="card-body">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h3 className="mb-0">
-              Transaction History
-            </h3>
+          <h3 className="mb-3">
+            Transaction History
+          </h3>
 
-            <select
-              className="form-select w-auto"
-              value={filter}
-              onChange={(e) =>
-                setFilter(e.target.value)
-              }
-            >
-              <option value="all">
-                All
-              </option>
+          <div className="row mb-4 g-3">
 
-              <option value="income">
-                Income
-              </option>
+  <div className="col-md-2">
+    <select
+      className="form-select"
+      value={filter}
+      onChange={(e) =>
+        setFilter(e.target.value)
+      }
+    >
+      <option value="all">
+        All
+      </option>
 
-              <option value="expense">
-                Expense
-              </option>
-            </select>
-          </div>
+      <option value="income">
+        Income
+      </option>
+
+      <option value="expense">
+        Expense
+      </option>
+    </select>
+  </div>
+
+  <div className="col-md-2">
+    <input
+      type="date"
+      className="form-control"
+      value={fromDate}
+      onChange={(e) =>
+        setFromDate(e.target.value)
+      }
+    />
+  </div>
+
+  <div className="col-md-2">
+    <input
+      type="date"
+      className="form-control"
+      value={toDate}
+      onChange={(e) =>
+        setToDate(e.target.value)
+      }
+    />
+  </div>
+
+  <div className="col-md-6">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Search by title or category..."
+      value={search}
+      onChange={(e) =>
+        setSearch(e.target.value)
+      }
+    />
+  </div>
+
+</div>
 
           {filteredTransactions.length === 0 ? (
             <div className="alert alert-info">
@@ -202,6 +286,7 @@ const TransactionManager = () => {
               <table className="table table-striped table-hover align-middle">
                 <thead>
                   <tr>
+                    <th>Date</th>
                     <th>Title</th>
                     <th>Category</th>
                     <th>Type</th>
@@ -213,9 +298,14 @@ const TransactionManager = () => {
                 <tbody>
                   {filteredTransactions.map(
                     (transaction) => (
-                      <tr
-                        key={transaction._id}
-                      >
+                      <tr key={transaction._id}>
+
+                        <td>
+                          {new Date(
+                            transaction.createdAt
+                          ).toLocaleDateString()}
+                        </td>
+
                         <td>
                           {transaction.title}
                         </td>
@@ -226,12 +316,10 @@ const TransactionManager = () => {
 
                         <td>
                           <span
-                            className={`badge ${
-                              transaction.type ===
-                              "income"
+                            className={`badge ${transaction.type === "income"
                                 ? "bg-success"
                                 : "bg-danger"
-                            }`}
+                              }`}
                           >
                             {transaction.type}
                           </span>
@@ -266,6 +354,7 @@ const TransactionManager = () => {
                             Delete
                           </button>
                         </td>
+
                       </tr>
                     )
                   )}

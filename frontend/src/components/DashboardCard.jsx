@@ -1,14 +1,18 @@
-const DashboardCard = ({ title, value }) => {
+const DashboardCard = ({
+  title,
+  value,
+  isCurrency = true,
+}) => {
   return (
-    <div className="col-md-4 mb-3">
-      <div className="card shadow-sm h-100">
-        <div className="card-body text-center">
-          <h5 className="card-title">{title}</h5>
+    <div className="card shadow-sm">
+      <div className="card-body text-center">
+        <h3>{title}</h3>
 
-          <h2 className="fw-bold">
-            {value.toLocaleString()} €
-          </h2>
-        </div>
+        <h1>
+          {value.toLocaleString()}
+
+          {isCurrency && " €"}
+        </h1>
       </div>
     </div>
   );

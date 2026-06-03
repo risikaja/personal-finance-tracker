@@ -9,6 +9,9 @@ import { useGetTransactionsQuery } from "../store/apis/transactionApi";
 import FinanceChart
   from "../components/FinanceChart";
 
+import ExpenseCategoryChart
+  from "../components/ExpenseCategoryChart";
+
 const Dashboard = () => {
   const { userInfo } = useSelector(
     (state) => state.user
@@ -41,28 +44,53 @@ const Dashboard = () => {
         </p>
       </div>
 
-      <div className="row">
-        <DashboardCard
-          title="Current Balance"
-          value={balance}
-        />
+      <div className="row g-4 mb-4">
 
-        <DashboardCard
-          title="Total Income"
-          value={totalIncome}
-        />
+  <div className="col-lg-3 col-md-6">
+    <DashboardCard
+      title="Current Balance"
+      value={balance}
+      isCurrency={true}
+    />
+  </div>
 
-        <DashboardCard
-          title="Total Expenses"
-          value={totalExpense}
-        />
-      </div>
+  <div className="col-lg-3 col-md-6">
+    <DashboardCard
+      title="Total Income"
+      value={totalIncome}
+      isCurrency={true}
+    />
+  </div>
+
+  <div className="col-lg-3 col-md-6">
+    <DashboardCard
+      title="Total Expenses"
+      value={totalExpense}
+      isCurrency={true}
+    />
+  </div>
+
+  <div className="col-lg-3 col-md-6">
+    <DashboardCard
+      title="Transactions"
+      value={transactions.length}
+      isCurrency={false}
+    />
+  </div>
+
+</div>
+
+      
 
       <hr className="my-4" />
 
       <FinanceChart
         income={totalIncome}
         expense={totalExpense}
+      />
+
+      <ExpenseCategoryChart
+        transactions={transactions}
       />
 
       <TransactionManager />

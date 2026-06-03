@@ -1,181 +1,285 @@
-import { Link } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
+import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+
+import MainLayout from "../layouts/MainLayout";
+import heroImage from "../assets/hero-finance.jpg";
+import dashboardPreview from "../assets/dashboard-preview.png";
 
 const Home = () => {
   const { userInfo } = useSelector(
-  (state) => state.user
-);
+    (state) => state.user
+  );
 
-if (userInfo) {
-  return <Navigate to="/dashboard" />;
-}
+  if (userInfo) {
+    return <Navigate to="/dashboard" />;
+  }
+
   return (
     <MainLayout>
-      {/* Hero Section */}
 
-      <section className="py-5">
-        <div className="row align-items-center">
+      {/* HERO SECTION */}
 
-          <div className="col-lg-6">
-            <h1 className="display-4 fw-bold">
-              Manage Your Personal Finances
-            </h1>
+      <section
+        className="rounded-4 overflow-hidden mb-5"
+        style={{
+          minHeight: "75vh",
+          backgroundImage: `
+            linear-gradient(
+              rgba(0,0,0,0.55),
+              rgba(0,0,0,0.55)
+            ),
+            url(${heroImage})
+          `,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div
+          className="d-flex align-items-center justify-content-center text-center text-white"
+          style={{
+            minHeight: "75vh",
+          }}
+        >
+          <div>
 
-            <p className="lead mt-3">
-              Track your income, monitor your expenses,
-              and gain valuable insights into your
-              financial habits.
+            <p
+              className="text-uppercase mb-3"
+              style={{
+                letterSpacing: "3px",
+              }}
+            >
+              Personal Finance Tracker
             </p>
 
-            <div className="mt-4">
-              <Link
-                to="/register"
-                className="btn btn-primary btn-lg me-3"
-              >
-                Get Started
-              </Link>
+            <h1
+              className="fw-bold mb-4"
+              style={{
+                fontSize: "4rem",
+              }}
+            >
+              Track Your Finances
+              <br />
+              With Confidence
+            </h1>
 
-              <Link
-                to="/login"
-                className="btn btn-outline-dark btn-lg"
-              >
-                Login
-              </Link>
-            </div>
+            <p
+              className="lead mx-auto mb-4"
+              style={{
+                maxWidth: "700px",
+              }}
+            >
+              Monitor income, expenses and
+              financial performance in one place.
+              Gain better control over your money
+              through a simple and intuitive dashboard.
+            </p>
+
+            <Link
+              to="/register"
+              className="btn btn-primary btn-lg me-3"
+            >
+              Get Started
+            </Link>
+
+            <Link
+              to="/login"
+              className="btn btn-outline-light btn-lg"
+            >
+              Login
+            </Link>
+
           </div>
-
-          <div className="col-lg-6 text-center mt-4 mt-lg-0">
-            <img
-              src="https://images.unsplash.com/photo-1554224155-6726b3ff858f"
-              alt="Finance"
-              className="img-fluid rounded shadow"
-            />
-          </div>
-
         </div>
       </section>
 
-      {/* Features */}
+      {/* FEATURES */}
 
-      <section className="py-5">
+      <section className="mb-5">
+
         <div className="text-center mb-5">
-          <h2>Key Features</h2>
+          <h2 className="fw-bold">
+            Why Choose Finance Tracker
+          </h2>
+
           <p className="text-muted">
-            Everything you need to manage your finances.
+            Everything you need to manage
+            your finances efficiently.
           </p>
         </div>
 
-        <div className="row">
+        <div className="row g-4">
 
-          <div className="col-md-4 mb-4">
-            <div className="card shadow-sm h-100">
-              <div className="card-body text-center">
-                <h4>💰 Track Income</h4>
+          <div className="col-md-4">
+            <div className="card border-0 shadow-sm h-100">
+              <div className="card-body text-center p-4">
 
-                <p>
-                  Record all your income sources and
-                  keep track of your earnings.
+                <i
+                  className="bi bi-shield-lock"
+                  style={{
+                    fontSize: "2.5rem",
+                  }}
+                ></i>
+
+                <h4 className="mt-3">
+                  Secure Authentication
+                </h4>
+
+                <p className="text-muted">
+                  JWT authentication and encrypted
+                  passwords ensure secure access.
                 </p>
+
               </div>
             </div>
           </div>
 
-          <div className="col-md-4 mb-4">
-            <div className="card shadow-sm h-100">
-              <div className="card-body text-center">
-                <h4>📉 Monitor Expenses</h4>
+          <div className="col-md-4">
+            <div className="card border-0 shadow-sm h-100">
+              <div className="card-body text-center p-4">
 
-                <p>
-                  Understand where your money goes and
-                  manage spending effectively.
+                <i
+                  className="bi bi-wallet2"
+                  style={{
+                    fontSize: "2.5rem",
+                  }}
+                ></i>
+
+                <h4 className="mt-3">
+                  Expense Tracking
+                </h4>
+
+                <p className="text-muted">
+                  Record income and expenses
+                  quickly and efficiently.
                 </p>
+
               </div>
             </div>
           </div>
 
-          <div className="col-md-4 mb-4">
-            <div className="card shadow-sm h-100">
-              <div className="card-body text-center">
-                <h4>📊 Financial Insights</h4>
+          <div className="col-md-4">
+            <div className="card border-0 shadow-sm h-100">
+              <div className="card-body text-center p-4">
 
-                <p>
-                  Visualize financial data and make
-                  smarter decisions.
+                <i
+                  className="bi bi-graph-up"
+                  style={{
+                    fontSize: "2.5rem",
+                  }}
+                ></i>
+
+                <h4 className="mt-3">
+                  Financial Analytics
+                </h4>
+
+                <p className="text-muted">
+                  Analyze spending habits
+                  through statistics and charts.
                 </p>
+
               </div>
             </div>
           </div>
 
         </div>
+
       </section>
 
-      {/* How It Works */}
+      {/* DASHBOARD PREVIEW */}
 
-      <section className="py-5 bg-light rounded">
-        <div className="container">
+      <section className="my-5">
 
-          <div className="text-center mb-5">
-            <h2>How It Works</h2>
+        <div className="row align-items-center">
+
+          <div className="col-lg-5">
+
+            <h2 className="fw-bold mb-4">
+              See Your Financial Data
+              At A Glance
+            </h2>
+
+            <p className="lead text-muted">
+              Monitor your current balance,
+              income, expenses and transaction
+              history through a clean and modern
+              dashboard experience.
+            </p>
+
           </div>
 
-          <div className="row text-center">
+          <div className="col-lg-7">
 
-            <div className="col-md-4">
-              <h1 className="fw-bold">1</h1>
+            <div className="card shadow border-0">
 
-              <h5>Create Account</h5>
+              <div className="card-body">
 
-              <p>
-                Register and create your personal
-                finance account.
-              </p>
-            </div>
+                <div className="row text-center">
 
-            <div className="col-md-4">
-              <h1 className="fw-bold">2</h1>
+                  <div className="col-4">
+                    <h6>Balance</h6>
+                    <h4 className="text-success">
+                      800 €
+                    </h4>
+                  </div>
 
-              <h5>Add Transactions</h5>
+                  <div className="col-4">
+                    <h6>Income</h6>
+                    <h4 className="text-primary">
+                      1200 €
+                    </h4>
+                  </div>
 
-              <p>
-                Record your income and expenses.
-              </p>
-            </div>
+                  <div className="col-4">
+                    <h6>Expenses</h6>
+                    <h4 className="text-danger">
+                      400 €
+                    </h4>
+                  </div>
 
-            <div className="col-md-4">
-              <h1 className="fw-bold">3</h1>
+                </div>
 
-              <h5>Analyze Finances</h5>
+                <hr />
 
-              <p>
-                Monitor your balance and financial
-                performance.
-              </p>
+                <img
+                  src={dashboardPreview}
+                  alt="Dashboard Preview"
+                  className="img-fluid rounded"
+                />
+
+              </div>
+
             </div>
 
           </div>
 
         </div>
+
       </section>
 
       {/* CTA */}
 
-      <section className="py-5 text-center">
-        <h2>
-          Ready to Take Control of Your Finances?
+      <section
+        className="text-center py-5 my-5 rounded-4"
+        style={{
+          background: "#f8f9fa",
+        }}
+      >
+        <h2 className="fw-bold">
+          Ready To Start?
         </h2>
 
-        <p className="lead">
-          Start tracking your finances today.
+        <p className="lead text-muted">
+          Create your account and take control
+          of your finances today.
         </p>
 
         <Link
           to="/register"
-          className="btn btn-success btn-lg"
+          className="btn btn-primary btn-lg"
         >
           Create Free Account
         </Link>
+
       </section>
 
     </MainLayout>
