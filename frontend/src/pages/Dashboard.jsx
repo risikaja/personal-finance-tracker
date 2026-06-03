@@ -1,13 +1,22 @@
 import { useSelector } from "react-redux";
+
+import MainLayout from "../layouts/MainLayout";
+import DashboardCard from "../components/DashboardCard";
+import TransactionManager from "../components/TransactionManager";
+
 import { useGetTransactionsQuery } from "../store/apis/transactionApi";
+
+import FinanceChart
+  from "../components/FinanceChart";
 
 const Dashboard = () => {
   const { userInfo } = useSelector(
     (state) => state.user
   );
 
-  const { data: transactions = [] } =
-    useGetTransactionsQuery();
+  const {
+    data: transactions = [],
+  } = useGetTransactionsQuery();
 
   const totalIncome = transactions
     .filter((t) => t.type === "income")
@@ -21,28 +30,43 @@ const Dashboard = () => {
     totalIncome - totalExpense;
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <MainLayout>
+      <div className="mb-4">
+        <h1>
+          Welcome {userInfo?.name}
+        </h1>
 
-      <h3>
-        Welcome {userInfo?.name}
-      </h3>
-
-      <div>
-        <h2>Total Income</h2>
-        <p>{totalIncome} €</p>
+        <p>
+          Personal Finance Dashboard
+        </p>
       </div>
 
-      <div>
-        <h2>Total Expenses</h2>
-        <p>{totalExpense} €</p>
+      <div className="row">
+        <DashboardCard
+          title="Current Balance"
+          value={balance}
+        />
+
+        <DashboardCard
+          title="Total Income"
+          value={totalIncome}
+        />
+
+        <DashboardCard
+          title="Total Expenses"
+          value={totalExpense}
+        />
       </div>
 
-      <div>
-        <h2>Current Balance</h2>
-        <p>{balance} €</p>
-      </div>
-    </div>
+      <hr className="my-4" />
+
+      <FinanceChart
+        income={totalIncome}
+        expense={totalExpense}
+      />
+
+      <TransactionManager />
+    </MainLayout>
   );
 };
 

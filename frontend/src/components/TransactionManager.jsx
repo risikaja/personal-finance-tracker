@@ -1,8 +1,7 @@
 import { useState } from "react";
-import MainLayout from "../layouts/MainLayout";
 import { toast } from "react-toastify";
 
-import EditTransactionModal from "../components/EditTransactionModal";
+import EditTransactionModal from "./EditTransactionModal";
 
 import {
   useGetTransactionsQuery,
@@ -10,7 +9,9 @@ import {
   useDeleteTransactionMutation,
 } from "../store/apis/transactionApi";
 
-const Transactions = () => {
+const TransactionManager = () => {
+  const [filter, setFilter] = useState("all");
+
   const { data: transactions = [] } =
     useGetTransactionsQuery();
 
@@ -20,8 +21,10 @@ const Transactions = () => {
   const [deleteTransaction] =
     useDeleteTransactionMutation();
 
-  const [selectedTransaction,
-    setSelectedTransaction] = useState(null);
+  const [
+    selectedTransaction,
+    setSelectedTransaction,
+  ] = useState(null);
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -50,7 +53,7 @@ const Transactions = () => {
     } catch (error) {
       toast.error(
         error?.data?.message ||
-        "Failed to add transaction"
+          "Failed to add transaction"
       );
     }
   };
@@ -65,14 +68,22 @@ const Transactions = () => {
     } catch (error) {
       toast.error(
         error?.data?.message ||
-        "Failed to delete transaction"
+          "Failed to delete transaction"
       );
     }
   };
 
+  const filteredTransactions =
+    filter === "all"
+      ? transactions
+      : transactions.filter(
+          (transaction) =>
+            transaction.type === filter
+        );
+
   return (
-    <MainLayout>
-      <h1 className="mb-4">Transactions</h1>
+    <>
+      {/* Add Transaction */}
 
       <div className="card shadow-sm mb-4">
         <div className="card-body">
@@ -82,7 +93,6 @@ const Transactions = () => {
 
           <form onSubmit={submitHandler}>
             <div className="row">
-
               <div className="col-md-3 mb-3">
                 <input
                   type="text"
@@ -148,19 +158,42 @@ const Transactions = () => {
                   Add
                 </button>
               </div>
-
             </div>
           </form>
         </div>
       </div>
 
+      {/* Transaction History */}
+
       <div className="card shadow-sm">
         <div className="card-body">
-          <h3 className="mb-3">
-            Transaction History
-          </h3>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h3 className="mb-0">
+              Transaction History
+            </h3>
 
-          {transactions.length === 0 ? (
+            <select
+              className="form-select w-auto"
+              value={filter}
+              onChange={(e) =>
+                setFilter(e.target.value)
+              }
+            >
+              <option value="all">
+                All
+              </option>
+
+              <option value="income">
+                Income
+              </option>
+
+              <option value="expense">
+                Expense
+              </option>
+            </select>
+          </div>
+
+          {filteredTransactions.length === 0 ? (
             <div className="alert alert-info">
               No transactions found.
             </div>
@@ -178,9 +211,11 @@ const Transactions = () => {
                 </thead>
 
                 <tbody>
-                  {transactions.map(
+                  {filteredTransactions.map(
                     (transaction) => (
-                      <tr key={transaction._id}>
+                      <tr
+                        key={transaction._id}
+                      >
                         <td>
                           {transaction.title}
                         </td>
@@ -243,11 +278,13 @@ const Transactions = () => {
 
       {selectedTransaction && (
         <EditTransactionModal
-          transaction={selectedTransaction}
+          transaction={
+            selectedTransaction
+          }
         />
       )}
-    </MainLayout>
+    </>
   );
 };
 
-export default Transactions;
+export default TransactionManager;
