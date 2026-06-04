@@ -37,6 +37,41 @@ export const getTransactions = async (req, res) => {
   }
 };
 
+//Get One Transaction by ID
+
+export const getTransactionById = async (
+  req,
+  res
+) => {
+  try {
+    const transaction =
+      await Transaction.findById(
+        req.params.id
+      );
+
+    if (!transaction) {
+      return res.status(404).json({
+        message: "Transaction not found",
+      });
+    }
+
+    if (
+      transaction.user.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(401).json({
+        message: "Not authorized",
+      });
+    }
+
+    res.json(transaction);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // Update Transaction
 export const updateTransaction = async (req, res) => {
   try {

@@ -158,6 +158,8 @@ const TransactionManager = () => {
                   className="form-control"
                   placeholder="Amount"
                   value={amount}
+                  min="1"
+                  step="1"
                   onChange={(e) =>
                     setAmount(e.target.value)
                   }
@@ -219,63 +221,63 @@ const TransactionManager = () => {
 
           <div className="row mb-4 g-3">
 
-  <div className="col-md-2">
-    <select
-      className="form-select"
-      value={filter}
-      onChange={(e) =>
-        setFilter(e.target.value)
-      }
-    >
-      <option value="all">
-        All
-      </option>
+            <div className="col-md-2">
+              <select
+                className="form-select"
+                value={filter}
+                onChange={(e) =>
+                  setFilter(e.target.value)
+                }
+              >
+                <option value="all">
+                  All
+                </option>
 
-      <option value="income">
-        Income
-      </option>
+                <option value="income">
+                  Income
+                </option>
 
-      <option value="expense">
-        Expense
-      </option>
-    </select>
-  </div>
+                <option value="expense">
+                  Expense
+                </option>
+              </select>
+            </div>
 
-  <div className="col-md-2">
-    <input
-      type="date"
-      className="form-control"
-      value={fromDate}
-      onChange={(e) =>
-        setFromDate(e.target.value)
-      }
-    />
-  </div>
+            <div className="col-md-2">
+              <input
+                type="date"
+                className="form-control"
+                value={fromDate}
+                onChange={(e) =>
+                  setFromDate(e.target.value)
+                }
+              />
+            </div>
 
-  <div className="col-md-2">
-    <input
-      type="date"
-      className="form-control"
-      value={toDate}
-      onChange={(e) =>
-        setToDate(e.target.value)
-      }
-    />
-  </div>
+            <div className="col-md-2">
+              <input
+                type="date"
+                className="form-control"
+                value={toDate}
+                onChange={(e) =>
+                  setToDate(e.target.value)
+                }
+              />
+            </div>
 
-  <div className="col-md-6">
-    <input
-      type="text"
-      className="form-control"
-      placeholder="Search by title or category..."
-      value={search}
-      onChange={(e) =>
-        setSearch(e.target.value)
-      }
-    />
-  </div>
+            <div className="col-md-6">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by title or category..."
+                value={search}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+              />
+            </div>
 
-</div>
+          </div>
 
           {filteredTransactions.length === 0 ? (
             <div className="alert alert-info">
@@ -317,8 +319,8 @@ const TransactionManager = () => {
                         <td>
                           <span
                             className={`badge ${transaction.type === "income"
-                                ? "bg-success"
-                                : "bg-danger"
+                              ? "bg-success"
+                              : "bg-danger"
                               }`}
                           >
                             {transaction.type}
